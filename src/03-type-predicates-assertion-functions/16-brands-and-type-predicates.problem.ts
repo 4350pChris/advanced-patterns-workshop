@@ -8,7 +8,9 @@ interface PasswordValues {
   confirmPassword: string;
 }
 
-const isValidPassword = (values: PasswordValues) => {
+const isValidPassword = (
+  values: PasswordValues
+): values is Valid<PasswordValues> => {
   if (values.password !== values.confirmPassword) {
     return false;
   }

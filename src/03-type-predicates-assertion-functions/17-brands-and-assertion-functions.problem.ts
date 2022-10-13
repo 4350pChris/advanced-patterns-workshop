@@ -8,7 +8,9 @@ interface PasswordValues {
   confirmPassword: string;
 }
 
-function assertIsValidPassword(values: PasswordValues) {
+function assertIsValidPassword(
+  values: PasswordValues
+): asserts values is Valid<PasswordValues> {
   if (values.password !== values.confirmPassword) {
     throw new Error("Password is invalid");
   }
