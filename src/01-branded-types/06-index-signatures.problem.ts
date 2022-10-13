@@ -15,8 +15,13 @@ interface Post {
   title: string;
 }
 
+interface DB {
+  [key: PostId]: Post;
+  [key: UserId]: User;
+}
+
 // Change this type definition!
-const db: Record<string, User | Post> = {};
+const db: DB = {};
 
 it("Should let you add users and posts to the db by their id", () => {
   const postId = "post_1" as PostId;
@@ -37,7 +42,7 @@ it("Should let you add users and posts to the db by their id", () => {
 
   type tests = [
     Expect<Equal<typeof post, Post>>,
-    Expect<Equal<typeof user, User>>,
+    Expect<Equal<typeof user, User>>
   ];
 });
 

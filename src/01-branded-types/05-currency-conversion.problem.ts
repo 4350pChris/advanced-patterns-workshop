@@ -7,25 +7,32 @@ interface User {
   maxConversionAmount: number;
 }
 
+type AuthUser = Brand<User, "AuthUser">;
+type ConvertedValue = Brand<number, "ConvertedValue">;
+
 // Mocks a function that uses an API to convert
 // One currency to another
 const getConversionRateFromApi = async (
   amount: number,
   from: string,
-  to: string,
+  to: string
 ) => {
-  return Promise.resolve(amount * 0.82);
+  return Promise.resolve((amount * 0.82) as ConvertedValue);
 };
 
 // Mocks a function which actually performs the conversion
-const performConversion = async (user: User, to: string, amount: number) => {};
+const performConversion = async (
+  user: AuthUser,
+  to: string,
+  amount: ConvertedValue
+) => {};
 
-const ensureUserCanConvert = (user: User, amount: number): User => {
+const ensureUserCanConvert = (user: User, amount: ConvertedValue): AuthUser => {
   if (user.maxConversionAmount < amount) {
     throw new Error("User cannot convert currency");
   }
 
-  return user;
+  return user as AuthUser;
 };
 
 describe("Possible implementations", () => {
@@ -34,7 +41,7 @@ describe("Possible implementations", () => {
       user: User,
       from: string,
       to: string,
-      amount: number,
+      amount: number
     ) => {
       const convertedAmount = await getConversionRateFromApi(amount, from, to);
 
@@ -48,7 +55,7 @@ describe("Possible implementations", () => {
       user: User,
       from: string,
       to: string,
-      amount: number,
+      amount: number
     ) => {
       // @ts-expect-error
       const authorizedUser = ensureUserCanConvert(user, amount);
@@ -63,7 +70,7 @@ describe("Possible implementations", () => {
       user: User,
       from: string,
       to: string,
-      amount: number,
+      amount: number
     ) => {
       const convertedAmount = await getConversionRateFromApi(amount, from, to);
       const authorizedUser = ensureUserCanConvert(user, convertedAmount);
