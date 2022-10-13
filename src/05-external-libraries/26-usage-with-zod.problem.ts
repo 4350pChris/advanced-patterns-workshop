@@ -17,9 +17,9 @@ import { z } from "zod";
  */
 const makeZodSafeFunction = <TSchema extends z.ZodType, TResult>(
   schema: TSchema,
-  func: (arg: unknown) => TResult,
+  func: (arg: z.infer<TSchema>) => TResult
 ) => {
-  return (arg: unknown) => {
+  return (arg: z.infer<TSchema>) => {
     const result = schema.parse(arg);
     return func(result);
   };
@@ -32,15 +32,15 @@ const addTwoNumbersArg = z.object({
 
 const addTwoNumbers = makeZodSafeFunction(
   addTwoNumbersArg,
-  (args) => args.a + args.b,
+  (args) => args.a + args.b
 );
 
 it("Should error on the type level AND the runtime if you pass incorrect params", () => {
   expect(() =>
     addTwoNumbers(
       // @ts-expect-error
-      { a: 1, badParam: 3 },
-    ),
+      { a: 1, badParam: 3 }
+    )
   ).toThrow();
 });
 

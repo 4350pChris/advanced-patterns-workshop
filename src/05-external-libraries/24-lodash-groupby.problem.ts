@@ -2,7 +2,7 @@ import _ from "lodash";
 import { expect, it } from "vitest";
 import { doNotExecute, Equal, Expect } from "../helpers/type-utils";
 
-const groupByAge = (array: unknown[]) => {
+const groupByAge = <T extends { age: number }>(array: T[]) => {
   const grouped = _.groupBy(array, "age");
 
   return grouped;
@@ -44,7 +44,7 @@ it("Should group the items by age", () => {
   });
 
   type tests = [
-    Expect<Equal<typeof result, _.Dictionary<{ name: string; age: number }[]>>>,
+    Expect<Equal<typeof result, _.Dictionary<{ name: string; age: number }[]>>>
   ];
 });
 

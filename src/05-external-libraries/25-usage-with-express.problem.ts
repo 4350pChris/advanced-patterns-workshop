@@ -29,8 +29,11 @@ type Params = Record<string, string>;
  * Record<string, string>.
  */
 const makeTypeSafeGet =
-  (parser: (params: Params) => unknown, handler: RequestHandler) =>
-  (req: Request, res: Response, next: NextFunction) => {
+  <TParams extends Params>(
+    parser: (params: Params) => TParams,
+    handler: RequestHandler<TParams>
+  ) =>
+  (req: Request<TParams>, res: Response, next: NextFunction) => {
     try {
       /**
        * Try removing the 'as' cast below and see what happens.
@@ -63,7 +66,7 @@ const getUser = makeTypeSafeGet(
       id: req.params.id,
       name: "Matt",
     });
-  },
+  }
 );
 
 app.get("/user", getUser);
