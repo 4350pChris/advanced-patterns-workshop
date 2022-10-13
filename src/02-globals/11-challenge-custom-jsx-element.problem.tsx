@@ -7,4 +7,13 @@ import React from "react";
  * out JSX.IntrinsicElements.
  */
 
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      // 🐨 add a new element here
+      "custom-element": {}
+    }
+  }
+}
+
 const element = <custom-element>hello world</custom-element>;
